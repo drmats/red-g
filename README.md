@@ -1,14 +1,14 @@
-# red-goodies
+# red-g
 
 Statically typed goodies for **[redux](https://redux.js.org/)**.
 
-[![npm version](https://img.shields.io/npm/v/red-goodies.svg)](https://www.npmjs.com/package/red-goodies)
-[![GitHub code size](https://img.shields.io/github/languages/code-size/drmats/red-goodies.svg)](https://github.com/drmats/red-goodies)
-[![GitHub tag](https://img.shields.io/github/tag/drmats/red-goodies.svg)](https://github.com/drmats/red-goodies)
-[![npm license](https://img.shields.io/npm/l/red-goodies.svg)](https://www.npmjs.com/package/red-goodies)
+[![npm version](https://img.shields.io/npm/v/red-g.svg)](https://www.npmjs.com/package/red-g)
+[![GitHub code size](https://img.shields.io/github/languages/code-size/drmats/red-g.svg)](https://github.com/drmats/red-g)
+[![GitHub tag](https://img.shields.io/github/tag/drmats/red-g.svg)](https://github.com/drmats/red-g)
+[![npm license](https://img.shields.io/npm/l/red-g.svg)](https://www.npmjs.com/package/red-g)
 
 ```bash
-$ npm i red-goodies
+$ npm i red-g
 ```
 
 `<fancyBuzzwordUsageWarning>` It's **opinionated**. `</fancyBuzzwordUsageWarning>`
@@ -34,7 +34,7 @@ $ npm i red-goodies
 2. easy action creators - define only those carrying some payload, empty
     ones are defined automatically (example `app/action.ts` file):
     ```typescript
-    import { actionCreators } from "red-goodies";
+    import { actionCreators } from "red-g";
     import { AppActionType } from "./action_type";
 
     export default actionCreators(AppActionType, {
@@ -66,12 +66,12 @@ $ npm i red-goodies
 
 4. fantastic slice reducers (example `app/reducer.ts` file) with matchers:
     ```typescript
-    import type { Action } from "red-goodies";
+    import type { Action } from "red-g";
     import {
         isStringActionType,
         isWithPayload,
         sliceReducer,
-    } from "red-goodies";
+    } from "red-g";
     import initState from "./state";
     import app from "./action";
 
@@ -152,7 +152,7 @@ $ npm i red-goodies
     } from "redux";
     import {
         bindActionCreatorsTree,
-    } from "red-goodies";
+    } from "red-g";
     import {
         action,
         reducer,
@@ -194,7 +194,7 @@ Really (examples will appear "next tuesday" 🤣️).
 
 ## documentation
 
-> [API Reference](https://drmats.github.io/red-goodies/)
+> [API Reference](https://drmats.github.io/red-g/)
 
 <br />
 
@@ -231,7 +231,7 @@ redux
 
 ## notes
 
-Go ahead and [file an issue](https://github.com/drmats/red-goodies/issues/new)
+Go ahead and [file an issue](https://github.com/drmats/red-g/issues/new)
 if you found a bug 🐞.
 
 </br>
@@ -253,8 +253,8 @@ You can support this project via [stellar][stellar] network:
 
 ## license
 
-**red-goodies** is released under the Apache License, Version 2.0. See the
-[LICENSE](https://github.com/drmats/red-goodies/blob/master/LICENSE)
+**red-g** is released under the Apache License, Version 2.0. See the
+[LICENSE](https://github.com/drmats/red-g/blob/master/LICENSE)
 for more details.
 
 

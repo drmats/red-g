@@ -1,5 +1,5 @@
 /**
- * Red-goodies.
+ * Red-g.
  *
  * @license Apache-2.0
  * @author drmats
