@@ -175,7 +175,6 @@ $ npm i red-g
 
 There's more to be happy about if you use
 [IntelliSense](https://code.visualstudio.com/docs/editor/intellisense).
-Really (examples will appear "next tuesday" 🤣️).
 
 <br />
 
