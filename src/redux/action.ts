@@ -19,6 +19,7 @@ import type {
     Override,
     SafeKey,
 } from "@xcmats/js-toolbox/type";
+import { toBool } from "@xcmats/js-toolbox/type";
 import { objectMap } from "@xcmats/js-toolbox/struct";
 
 
@@ -171,6 +172,22 @@ export interface ActionCreator<
 
 
 /**
+ * Type predicate - red-g's internal.
+ */
+export function isActionCreatorProducingActionWithPayload<
+    PayloadType,
+    ActionType extends SafeKey,
+    Args extends Arr = Arr,
+> (
+    a: ActionCreator<PayloadType, ActionType, Args>,
+): a is PayloadActionCreator<PayloadType, ActionType, Args> {
+    return a[payload];
+}
+
+
+
+
+/**
  * Redux action creator definer.
  *
  * @function defineActionCreator
@@ -205,6 +222,7 @@ export function defineActionCreator<
             payload: creator(...args),
         });
     actionCreator.type = actionType;
+    actionCreator[payload] = toBool(creator);
     return actionCreator;
 }
 

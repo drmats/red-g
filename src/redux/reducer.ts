@@ -28,7 +28,10 @@ import type {
     ReduxCompatAction,
     ReduxCompatAnyAction,
 } from "./action";
-import { isWithPayload } from "./action";
+import {
+    isActionCreatorProducingActionWithPayload,
+    isWithPayload,
+} from "./action";
 
 
 
@@ -112,7 +115,7 @@ interface SliceBuildAPI<StateType> {
     ): SliceBuildAPI<StateType>;
     // match actions using type predicate - useful for matching actions
     // by payload content (overload)
-    match <PayloadType>(
+    match<PayloadType> (
         predicate: (action: Action) => action is Action<PayloadType>,
         reducer: (
             state: Readonly<StateType>,
@@ -160,7 +163,7 @@ export function sliceReducer<StateType> (initState: StateType): (
                     payload?: PayloadType,
                 ) => Readonly<StateType>,
             ): typeof slice => {
-                if (reducer.length === 2) {
+                if (isActionCreatorProducingActionWithPayload(actionCreator)) {
                     reducers[actionCreator.type] = (
                         state: Readonly<StateType>,
                         action: PayloadAction<PayloadType, ActionType>,
