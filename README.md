@@ -156,7 +156,7 @@ $ npm i red-g
     import {
         action,
         reducer,
-    } from "./state_logic.ts";
+    } from "./state_logic";
 
     const rootReducer = combineReducers(reducer);
 
@@ -175,6 +175,36 @@ $ npm i red-g
 
 There's more to be happy about if you use
 [IntelliSense](https://code.visualstudio.com/docs/editor/intellisense).
+
+<br />
+
+
+
+
+## can I use [immer](https://immerjs.github.io/immer/)?
+
+Sure! [Curried producers](https://immerjs.github.io/immer/curried-produce)
+are supported out of the box:
+
+```typescript
+import {sliceReducer} from "red-g";
+import produce from "immer";
+import initState from "./state";
+import app from "./action";
+
+export default sliceReducer(initState) (
+    (slice) => slice
+        .handle(app.RESET, () => initState)
+
+        .handle(app.READY, produce((draft) => {
+            draft.ready = true;
+        })
+
+        .handle(app.DELAYED, produce((draft, { condition }) => {
+            draft.delayed = condition;
+        }),
+);
+```
 
 <br />
 
