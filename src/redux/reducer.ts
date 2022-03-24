@@ -126,7 +126,10 @@ interface SliceBuildAPI<StateType> {
     // using string operations on their type (overload)
     match (
         predicate: (action: Action) => boolean,
-        reducer: (state: Readonly<StateType>) => Readonly<StateType>,
+        reducer: (
+            state: Readonly<StateType>,
+            payload: never,
+        ) => Readonly<StateType>,
     ): SliceBuildAPI<StateType>;
 }
 
@@ -182,12 +185,9 @@ export function sliceReducer<StateType> (initState: StateType): (
             },
             // additionally match actions using predicate (matcher is run
             // against all actions - handled and unhandled earlier)
-            match: <PayloadType>(
+            match: (
                 predicate: (action: Action) => boolean,
-                reducer: (
-                    state: Readonly<StateType>,
-                    payload?: PayloadType,
-                ) => Readonly<StateType>,
+                reducer: any,
             ): typeof slice => {
                 matchers.push(
                     (state, action) =>
