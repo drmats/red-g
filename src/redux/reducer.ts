@@ -29,7 +29,7 @@ import type {
     ReduxCompatAnyAction,
 } from "./action";
 import {
-    isActionCreatorProducingActionWithPayload,
+    isACProducingActionWithPayload,
     isWithPayload,
 } from "./action";
 
@@ -166,7 +166,7 @@ export function sliceReducer<StateType> (initState: StateType): (
                     payload?: PayloadType,
                 ) => Readonly<StateType>,
             ): typeof slice => {
-                if (isActionCreatorProducingActionWithPayload(actionCreator)) {
+                if (isACProducingActionWithPayload(actionCreator)) {
                     reducers[actionCreator.type] = (
                         state: Readonly<StateType>,
                         action: PayloadAction<PayloadType, ActionType>,

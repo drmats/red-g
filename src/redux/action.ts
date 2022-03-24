@@ -172,9 +172,9 @@ export interface ActionCreator<
 
 
 /**
- * Type predicate - red-g's internal.
+ * Type predicate - not exposed red-g's internal.
  */
-export function isActionCreatorProducingActionWithPayload<
+export function isACProducingActionWithPayload<
     PayloadType,
     ActionType extends SafeKey,
     Args extends Arr = Arr,
