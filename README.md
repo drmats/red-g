@@ -187,7 +187,11 @@ Sure! [Curried producers](https://immerjs.github.io/immer/curried-produce)
 are supported out of the box:
 
 ```typescript
-import {sliceReducer} from "red-g";
+import type { Action } from "red-g";
+import {
+    isWithPayload,
+    sliceReducer,
+} from "red-g";
 import produce from "immer";
 import initState from "./state";
 import app from "./action";
@@ -202,7 +206,15 @@ export default sliceReducer(initState) (
 
         .handle(app.DELAYED, produce((draft, { condition }) => {
             draft.delayed = condition;
-        }),
+        })
+
+        .match(
+            (action): action is Action<{ error: string }> =>
+                isWithPayload(action) && action.payload.error,
+            produce((draft, payload) => {
+                draft.error = payload.error;
+            }),
+        ),
 );
 ```
 
