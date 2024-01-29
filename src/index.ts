@@ -2,7 +2,7 @@
  * Red-g.
  *
  * @license Apache-2.0
- * @author drmats
+ * @copyright Mat. 2020-present
  */
 
 
@@ -11,34 +11,32 @@
 /**
  * @see {@link module:redux}
  */
-export type {
-    Action,
-    ActionCreator,
-    EmptyAction,
-    EmptyActionCreator,
-    EmptyActionCreators,
-    PayloadAction,
-    PayloadActionCreator,
-    PayloadActionCreators,
-    ReduxCompatAction,
-    ReduxCompatAnyAction,
-} from "./redux/action";
-export type {
-    Reducer,
-    ReduxCompatReducer,
-} from "./redux/reducer";
 export {
     actionCreators,
     bindActionCreator,
     bindActionCreators,
     bindActionCreatorsTree,
-    createReducer,
     defineActionCreator,
     emptyActionCreators,
     isNumberActionType,
     isStringActionType,
     isWithPayload,
     payloadActionCreators,
+    type Action,
+    type ActionCreator,
+    type EmptyAction,
+    type EmptyActionCreator,
+    type EmptyActionCreators,
+    type PayloadAction,
+    type PayloadActionCreator,
+    type PayloadActionCreators,
+    type ReduxCompatAction,
+    type ReduxCompatAnyAction,
+} from "./redux/action";
+export {
+    createReducer,
     sliceReducer,
-} from "./redux";
+    type Reducer,
+    type ReduxCompatReducer,
+} from "./redux/reducer";
 export * as redux from "./redux";

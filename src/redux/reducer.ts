@@ -3,7 +3,7 @@
  *
  * @module redux
  * @license Apache-2.0
- * @author drmats
+ * @copyright Mat. 2020-present
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -11,27 +11,20 @@
 
 
 
-import type {
-    Fun,
-    SafeKey,
-} from "@xcmats/js-toolbox/type";
-import {
-    choose,
-    identity,
-} from "@xcmats/js-toolbox/func";
-import type {
-    Action,
-    ActionCreator,
-    EmptyActionCreator,
-    PayloadAction,
-    PayloadActionCreator,
-    ReduxCompatAction,
-    ReduxCompatAnyAction,
-} from "./action";
+import type { Fun, SafeKey } from "@xcmats/js-toolbox/type";
+import { choose, identity } from "@xcmats/js-toolbox/func";
+
 import {
     isACWithPayload,
     isWithPayload,
-} from "./action";
+    type Action,
+    type ActionCreator,
+    type EmptyActionCreator,
+    type PayloadAction,
+    type PayloadActionCreator,
+    type ReduxCompatAction,
+    type ReduxCompatAnyAction,
+} from "../redux/action";
 
 
 

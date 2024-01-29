@@ -1,6 +1,6 @@
 # red-g
 
-Statically typed goodies for **[redux](https://redux.js.org/)**.
+Statically typed actions and reducers for **[redux](https://redux.js.org/)**.
 
 [![npm version](https://img.shields.io/npm/v/red-g.svg)](https://www.npmjs.com/package/red-g)
 [![GitHub code size](https://img.shields.io/github/languages/code-size/drmats/red-g.svg)](https://github.com/drmats/red-g)
@@ -10,8 +10,6 @@ Statically typed goodies for **[redux](https://redux.js.org/)**.
 ```bash
 $ npm i red-g
 ```
-
-`<fancyBuzzwordUsageWarning>` It's **opinionated**. `</fancyBuzzwordUsageWarning>`
 
 <br />
 
@@ -223,16 +221,6 @@ export default sliceReducer(initState) (
 
 
 
-## inspiration
-
-* amazing [Typesafe Actions](https://github.com/piotrwitek/typesafe-actions)
-* briliant [Redux Toolkit](https://redux-toolkit.js.org/)
-
-<br />
-
-
-
-
 ## documentation
 
 > [API Reference](https://drmats.github.io/red-g/)
@@ -273,6 +261,7 @@ redux
 ## notes
 
 Go ahead and [file an issue](https://github.com/drmats/red-g/issues/new)
+or [submit a fresh PR](https://github.com/drmats/red-g/pulls)
 if you found a bug 🐞.
 
 </br>

@@ -3,7 +3,7 @@
  *
  * @module redux
  * @license Apache-2.0
- * @author drmats
+ * @copyright Mat. 2020-present
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -11,15 +11,15 @@
 
 
 
-import type {
-    AllowSubset,
-    Arr,
-    Fun,
-    NonConstEnum,
-    Override,
-    SafeKey,
+import {
+    toBool,
+    type AllowSubset,
+    type Arr,
+    type Fun,
+    type NonConstEnum,
+    type Override,
+    type SafeKey,
 } from "@xcmats/js-toolbox/type";
-import { toBool } from "@xcmats/js-toolbox/type";
 import { objectMap } from "@xcmats/js-toolbox/struct";
 
 
