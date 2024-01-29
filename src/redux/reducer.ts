@@ -7,6 +7,8 @@
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 
 
 
@@ -140,13 +142,13 @@ export function sliceReducer<StateType> (initState: StateType): (
     builder: (slice: SliceBuildAPI<StateType>) => void,
 ) => ReduxCompatReducer<Readonly<StateType>, Action> {
 
-    let
+    const
         reducers = {} as Record<SafeKey, Fun>,
-        matchers = [] as ReduxCompatReducer<Readonly<StateType>, Action>[],
-        defaultReducer: (
-            state: Readonly<StateType>,
-            action: Action,
-        ) => Readonly<StateType>;
+        matchers = [] as ReduxCompatReducer<Readonly<StateType>, Action>[];
+    let defaultReducer: (
+        state: Readonly<StateType>,
+        action: Action,
+    ) => Readonly<StateType>;
 
     const
         create = createReducer(initState),
@@ -186,9 +188,9 @@ export function sliceReducer<StateType> (initState: StateType): (
                     (state, action) =>
                         predicate(action) ?
                             isWithPayload(action) ?
-                                reducer(state || initState, action.payload) :
-                                reducer(state || initState) :
-                            state || initState,
+                                reducer(state ?? initState, action.payload) :
+                                reducer(state ?? initState) :
+                            state ?? initState,
 
                 );
                 return slice;
