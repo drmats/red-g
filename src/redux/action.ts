@@ -7,7 +7,9 @@
  */
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 
 
 
@@ -211,7 +213,7 @@ export function defineActionCreator<
     Args extends Arr,
 > (actionType: ActionType, creator?: Fun<Args, PayloadType>):
     ActionCreator<PayloadType, ActionType, Args> {
-    let actionCreator: any = !creator ?
+    const actionCreator: any = !creator ?
         () => ({
             type: actionType,
             [payload]: false,
@@ -252,7 +254,7 @@ export type EmptyActionCreators<ActionEnum extends NonConstEnum> = {
 export function emptyActionCreators<ActionEnum extends NonConstEnum> (
     actionEnum: ActionEnum,
 ): EmptyActionCreators<ActionEnum> {
-    let actions = {} as EmptyActionCreators<ActionEnum>;
+    const actions = {} as EmptyActionCreators<ActionEnum>;
     for (const actionType in actionEnum) {
         actions[actionType] = defineActionCreator(actionEnum[actionType]);
     }
@@ -389,7 +391,7 @@ export function bindActionCreator<
     actionCreator: ActionCreatorType | ActionCreator,
     dispatch: ReduxDispatch,
 ): typeof actionCreator {
-    let boundActionCreator = (
+    const boundActionCreator = (
         ...args: Parameters<ActionCreatorType>
     ) => dispatch(actionCreator(...args));
     if ((actionCreator as ActionCreator).type) {
