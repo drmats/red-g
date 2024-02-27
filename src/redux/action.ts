@@ -107,18 +107,6 @@ export function isWithPayload<PayloadType, ActionType extends string> (
 
 
 /**
- * Type predicate - is a given action of string type?
- */
-export function isStringActionType<PayloadType> (
-    a: Action<PayloadType>,
-): a is Action<PayloadType, string> {
-    return typeof a.type === "string";
-}
-
-
-
-
-/**
  * Action creator not carrying anything else than just `type` field.
  */
 export interface EmptyActionCreator<

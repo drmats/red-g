@@ -246,8 +246,6 @@ redux
 >   createReducer: [Function: createReducer],
 >   defineActionCreator: [Function: defineActionCreator],
 >   emptyActionCreators: [Function: emptyActionCreators],
->   isNumberActionType: [Function: isNumberActionType],
->   isStringActionType: [Function: isStringActionType],
 >   isWithPayload: [Function: isWithPayload],
 >   payloadActionCreators: [Function: payloadActionCreators],
 >   sliceReducer: [Function: sliceReducer] }

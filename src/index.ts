@@ -18,7 +18,6 @@ export {
     bindActionCreatorsTree,
     defineActionCreator,
     emptyActionCreators,
-    isStringActionType,
     isWithPayload,
     payloadActionCreators,
     type Action,
