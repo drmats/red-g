@@ -24,7 +24,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-redux.html">redux</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~actionCreators">actionCreators</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~bindActionCreator">bindActionCreator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~bindActionCreators">bindActionCreators</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~bindActionCreatorsTree">bindActionCreatorsTree</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~createReducer">createReducer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~defineActionCreator">defineActionCreator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~emptyActionCreators">emptyActionCreators</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~isACWithPayload">isACWithPayload</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~isNumberActionType">isNumberActionType</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~isStringActionType">isStringActionType</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~isWithPayload">isWithPayload</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~payloadActionCreators">payloadActionCreators</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~sliceReducer">sliceReducer</a></span></li>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-redux.html">redux</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~actionCreators">actionCreators</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~bindActionCreator">bindActionCreator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~bindActionCreators">bindActionCreators</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~bindActionCreatorsTree">bindActionCreatorsTree</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~createReducer">createReducer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~defineActionCreator">defineActionCreator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~emptyActionCreators">emptyActionCreators</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~isACWithPayload">isACWithPayload</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~isWithPayload">isWithPayload</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~payloadActionCreators">payloadActionCreators</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-redux.html#~sliceReducer">sliceReducer</a></span></li>
 </nav>
 
 <div id="main">
@@ -61,7 +61,6 @@ import {
     type Fun,
     type NonConstEnum,
     type Override,
-    type SafeKey,
 } from "@xcmats/js-toolbox/type";
 import { objectMap } from "@xcmats/js-toolbox/struct";
 
@@ -71,7 +70,7 @@ import { objectMap } from "@xcmats/js-toolbox/struct";
 /**
  * redux-compatible Action interface.
  */
-export interface ReduxCompatAction&lt;ActionType = any> {
+export interface ReduxCompatAction&lt;ActionType extends string = string> {
     type: ActionType;
 }
 
@@ -81,10 +80,8 @@ export interface ReduxCompatAction&lt;ActionType = any> {
 /**
  * redux-compatible AnyAction interface.
  */
-export interface ReduxCompatAnyAction&lt;
-    ActionType = any,
-> extends ReduxCompatAction&lt;ActionType> {
-    [key: string]: any;
+export interface ReduxCompatUnknownAction extends ReduxCompatAction {
+    [extraProps: string]: unknown;
 }
 
 
@@ -103,7 +100,7 @@ const payload = Symbol("payload");
  * Empty action consists just of { type: ActionType } field.
  */
 export interface EmptyAction&lt;
-    ActionType extends SafeKey = SafeKey,
+    ActionType extends string = string,
 > extends ReduxCompatAction&lt;ActionType> {
     [payload]: false;
 }
@@ -116,7 +113,7 @@ export interface EmptyAction&lt;
  */
 export interface PayloadAction&lt;
     PayloadType = any,
-    ActionType extends SafeKey = SafeKey,
+    ActionType extends string = string,
 > extends ReduxCompatAction&lt;ActionType> {
     [payload]: true;
     payload: PayloadType;
@@ -130,7 +127,7 @@ export interface PayloadAction&lt;
  */
 export type Action&lt;
     PayloadType = any,
-    ActionType extends SafeKey = SafeKey,
+    ActionType extends string = string,
 > =
     | EmptyAction&lt;ActionType>
     | PayloadAction&lt;PayloadType, ActionType>;
@@ -141,7 +138,7 @@ export type Action&lt;
 /**
  * Type predicate - does a given action carry payload?
  */
-export function isWithPayload&lt;PayloadType, ActionType extends SafeKey> (
+export function isWithPayload&lt;PayloadType, ActionType extends string> (
     a: Action&lt;PayloadType, ActionType>,
 ): a is PayloadAction&lt;PayloadType, ActionType> {
     return a[payload];
@@ -151,34 +148,10 @@ export function isWithPayload&lt;PayloadType, ActionType extends SafeKey> (
 
 
 /**
- * Type predicate - is a given action of string type?
- */
-export function isStringActionType&lt;PayloadType> (
-    a: Action&lt;PayloadType>,
-): a is Action&lt;PayloadType, string> {
-    return typeof a.type === "string";
-}
-
-
-
-
-/**
- * Type predicate - is a given action of number type?
- */
-export function isNumberActionType&lt;PayloadType> (
-    a: Action&lt;PayloadType>,
-): a is Action&lt;PayloadType, number> {
-    return typeof a.type === "number";
-}
-
-
-
-
-/**
  * Action creator not carrying anything else than just `type` field.
  */
 export interface EmptyActionCreator&lt;
-    ActionType extends SafeKey,
+    ActionType extends string,
 > extends EmptyAction&lt;ActionType> {
     (): EmptyAction&lt;ActionType>;
 }
@@ -191,7 +164,7 @@ export interface EmptyActionCreator&lt;
  */
 export interface PayloadActionCreator&lt;
     PayloadType = any,
-    ActionType extends SafeKey = SafeKey,
+    ActionType extends string = string,
     Args extends Arr = Arr,
 > extends EmptyAction&lt;ActionType> {
     (...args: Args): PayloadAction&lt;PayloadType, ActionType>;
@@ -205,7 +178,7 @@ export interface PayloadActionCreator&lt;
  */
 export interface ActionCreator&lt;
     PayloadType = any,
-    ActionType extends SafeKey = SafeKey,
+    ActionType extends string = string,
     Args extends Arr = Arr,
 > extends EmptyAction&lt;ActionType> {
     (...args: Args): Action&lt;PayloadType, ActionType>;
@@ -219,7 +192,7 @@ export interface ActionCreator&lt;
  */
 export function isACWithPayload&lt;
     PayloadType,
-    ActionType extends SafeKey,
+    ActionType extends string,
     Args extends Arr = Arr,
 > (
     a: ActionCreator&lt;PayloadType, ActionType, Args>,
@@ -239,17 +212,17 @@ export function isACWithPayload&lt;
  * @returns Action creator function.
  */
 export function defineActionCreator&lt;
-    ActionType extends SafeKey,
+    ActionType extends string,
 > (actionType: ActionType):
     EmptyActionCreator&lt;ActionType>;
 export function defineActionCreator&lt;
-    ActionType extends SafeKey,
+    ActionType extends string,
     PayloadType,
     Args extends Arr,
 > (actionType: ActionType, creator?: Fun&lt;Args, PayloadType>):
     PayloadActionCreator&lt;PayloadType, ActionType, Args>;
 export function defineActionCreator&lt;
-    ActionType extends SafeKey,
+    ActionType extends string,
     PayloadType,
     Args extends Arr,
 > (actionType: ActionType, creator?: Fun&lt;Args, PayloadType>):
@@ -276,7 +249,9 @@ export function defineActionCreator&lt;
  * Construct interface based on `ActionEnum`. Consist of empty action
  * creators (action creators without payload - just `type` field).
  */
-export type EmptyActionCreators&lt;ActionEnum extends NonConstEnum> = {
+export type EmptyActionCreators&lt;
+    ActionEnum extends NonConstEnum&lt;string, string>,
+> = {
     [K in keyof ActionEnum]: EmptyActionCreator&lt;ActionEnum[K]>;
 };
 
@@ -292,7 +267,9 @@ export type EmptyActionCreators&lt;ActionEnum extends NonConstEnum> = {
  * @param actionEnum Enum upon which an EmptyActionCreators object is built.
  * @returns EmptyActionCreators object.
  */
-export function emptyActionCreators&lt;ActionEnum extends NonConstEnum> (
+export function emptyActionCreators&lt;
+    ActionEnum extends NonConstEnum&lt;string, string>,
+> (
     actionEnum: ActionEnum,
 ): EmptyActionCreators&lt;ActionEnum> {
     const actions = {} as EmptyActionCreators&lt;ActionEnum>;
@@ -313,7 +290,7 @@ export function emptyActionCreators&lt;ActionEnum extends NonConstEnum> (
  * that are also present in `ActionEnum` type (all other keys are dropped).
  */
 export type PayloadActionCreators&lt;
-    ActionEnum extends NonConstEnum,
+    ActionEnum extends NonConstEnum&lt;string, string>,
     PayloadCreators,
 > = {
     [K in Extract&lt;keyof PayloadCreators, keyof ActionEnum>]:
@@ -342,7 +319,7 @@ export type PayloadActionCreators&lt;
  * @returns ActionCreators object.
  */
 export function payloadActionCreators&lt;
-    ActionEnum extends NonConstEnum,
+    ActionEnum extends NonConstEnum&lt;string, string>,
     PayloadCreators extends
         &amp; AllowSubset&lt;ActionEnum, PayloadCreators>
         &amp; Partial&lt;Record&lt;keyof ActionEnum, Fun>>,
@@ -376,10 +353,10 @@ export function payloadActionCreators&lt;
  * @returns ActionCreators object.
  */
 export function actionCreators&lt;
-    ActionEnum extends NonConstEnum,
+    ActionEnum extends NonConstEnum&lt;string, string>,
 > (actionEnum: ActionEnum): EmptyActionCreators&lt;ActionEnum>;
 export function actionCreators&lt;
-    ActionEnum extends NonConstEnum,
+    ActionEnum extends NonConstEnum&lt;string, string>,
     PayloadCreators extends
         &amp; AllowSubset&lt;ActionEnum, PayloadCreators>
         &amp; Partial&lt;Record&lt;keyof ActionEnum, Fun>>,
@@ -392,7 +369,7 @@ export function actionCreators&lt;
         PayloadActionCreators&lt;ActionEnum, PayloadCreators>
     >;
 export function actionCreators&lt;
-    ActionEnum extends NonConstEnum,
+    ActionEnum extends NonConstEnum&lt;string, string>,
     PayloadCreators extends
         &amp; AllowSubset&lt;ActionEnum, PayloadCreators>
         &amp; Partial&lt;Record&lt;keyof ActionEnum, Fun>>,
@@ -461,7 +438,7 @@ export function bindActionCreator&lt;
 export function bindActionCreators&lt;
     ActionCreatorType extends Fun,
     ReduxDispatch extends Fun&lt;[Action]>,
-    ActionCreators extends Record&lt;SafeKey, ActionCreatorType | ActionCreator>,
+    ActionCreators extends Record&lt;string, ActionCreatorType | ActionCreator>,
 > (
     actionCreators: ActionCreators,
     dispatch: ReduxDispatch,
@@ -487,7 +464,7 @@ export function bindActionCreators&lt;
 export function bindActionCreatorsTree&lt;
     ActionCreatorType extends Fun,
     ReduxDispatch extends Fun&lt;[Action]>,
-    ActionCreators extends Record&lt;SafeKey, ActionCreatorType | ActionCreator>,
+    ActionCreators extends Record&lt;string, ActionCreatorType | ActionCreator>,
     ACTree extends Record&lt;keyof ACTree, ActionCreators>,
 > (
     acTree: ACTree,
@@ -509,7 +486,7 @@ export function bindActionCreatorsTree&lt;
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Mon Jan 29 2024 16:31:05 GMT+0100 (Central European Standard Time) using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.2</a> on Tue Feb 27 2024 19:14:19 GMT+0100 (Central European Standard Time) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>
