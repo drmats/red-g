@@ -13,7 +13,7 @@
 
 
 
-import type { Fun, SafeKey } from "@xcmats/js-toolbox/type";
+import type { Fun } from "@xcmats/js-toolbox/type";
 import { choose, identity } from "@xcmats/js-toolbox/func";
 
 import {
@@ -25,7 +25,7 @@ import {
     type PayloadAction,
     type PayloadActionCreator,
     type ReduxCompatAction,
-    type ReduxCompatAnyAction,
+    type ReduxCompatUnknownAction,
 } from "../redux/action";
 
 
@@ -36,9 +36,10 @@ import {
  */
 export type ReduxCompatReducer<
     StateType = any,
-    ActionShape extends ReduxCompatAction = ReduxCompatAnyAction,
+    ActionShape extends ReduxCompatAction = ReduxCompatUnknownAction,
+    PreloadedStateType = StateType,
 > = (
-    state: StateType | undefined,
+    state: StateType | PreloadedStateType | undefined,
     action: ActionShape,
 ) => StateType;
 
@@ -51,7 +52,7 @@ export type ReduxCompatReducer<
 export type Reducer<
     StateType = any,
     PayloadType = any,
-    ActionType extends SafeKey = SafeKey,
+    ActionType extends string = string,
 > = (
     state: StateType,
     action: Action<PayloadType, ActionType>,
@@ -68,7 +69,7 @@ export type Reducer<
  * @returns {ReduxBoundReducer}
  */
 export function createReducer<StateType> (initState: StateType): (
-    reducers: Record<SafeKey, Reducer<StateType>>,
+    reducers: Record<string, Reducer<StateType>>,
     defaultReducer?: Reducer<StateType>,
 ) => ReduxCompatReducer<StateType, Action> {
     return (reducers, defaultReducer = identity) =>
@@ -89,12 +90,12 @@ export function createReducer<StateType> (initState: StateType): (
  */
 interface SliceBuildAPI<StateType> {
     // handle empty action (overload)
-    handle<ActionType extends SafeKey> (
+    handle<ActionType extends string> (
         actionCreator: EmptyActionCreator<ActionType>,
         reducer: (state: Readonly<StateType>) => Readonly<StateType>,
     ): SliceBuildAPI<StateType>;
     // handle action with payload (overload)
-    handle<ActionType extends SafeKey, PayloadType> (
+    handle<ActionType extends string, PayloadType> (
         actionCreator: PayloadActionCreator<PayloadType, ActionType>,
         reducer: (
             state: Readonly<StateType>,
@@ -143,7 +144,7 @@ export function sliceReducer<StateType> (initState: StateType): (
 ) => ReduxCompatReducer<Readonly<StateType>, Action> {
 
     const
-        reducers = {} as Record<SafeKey, Fun>,
+        reducers = {} as Record<string, Fun>,
         matchers = [] as ReduxCompatReducer<Readonly<StateType>, Action>[];
     let defaultReducer: (
         state: Readonly<StateType>,
@@ -154,7 +155,7 @@ export function sliceReducer<StateType> (initState: StateType): (
         create = createReducer(initState),
         slice: SliceBuildAPI<StateType> = {
             // handle concrete type of action
-            handle: <ActionType extends SafeKey, PayloadType>(
+            handle: <ActionType extends string, PayloadType>(
                 actionCreator: ActionCreator<PayloadType, ActionType>,
                 reducer: (
                     state: Readonly<StateType>,
