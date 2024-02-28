@@ -66,7 +66,6 @@ $ npm i red-g
     ```typescript
     import type { Action } from "red-g";
     import {
-        isStringActionType,
         isWithPayload,
         sliceReducer,
     } from "red-g";
@@ -115,9 +114,7 @@ $ npm i red-g
             // match all actions whose `type` field starts with
             // `App/` prefix ("boolean" matcher)
             .match(
-                (action) =>
-                    isStringActionType(action) &&
-                        action.type.startsWith("App/"),
+                (action) => action.type.startsWith("App/"),
                 (state) => ({
                     ...state, actionCount: state.actionCount + 1,
                 }),
