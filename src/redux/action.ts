@@ -11,9 +11,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-
-
 import {
+    isString,
     toBool,
     type AllowSubset,
     type Arr,
@@ -354,28 +353,74 @@ export function actionCreators<
 
 
 /**
- * Binds given action creator with chosen store's dispatch.
+ * Dispatch-bound action creators and thunks contain type field.
+ */
+type WithTypeField<T, ActionType extends string = string> =
+    & T
+    & { type: ActionType };
+
+
+
+
+/**
+ * Checks for `type` field presence in a given candidate.
+ */
+const isWithTypeField = <
+    T,
+    ActionType extends string = string,
+>(c: T): c is WithTypeField<T, ActionType> => {
+    try {
+        return (
+            typeof c !== "undefined" &&
+            c != null &&
+            isString((c as { type?: ActionType }).type)
+        );
+    } catch {
+        return false;
+    }
+};
+
+
+
+
+/**
+ * Infer return type if `T` is function, return `T` itself otherwise.
+ */
+type ReturnTypeOrType<T> = T extends (...args: any) => infer R ? R : T;
+
+
+
+
+/**
+ * Binds given action creator or thunk with chosen store's dispatch.
  *
  * @function bindActionCreator
- * @param actionCreator any action creator
+ * @param actionCreatorOrThunk any action creator or thunk
  * @param dispatch redux store's `dispatch` function
- * @returns bound action creator
+ * @returns bound action creator or thunk dispatch
  */
 export function bindActionCreator<
-    ActionCreatorType extends Fun,
-    ReduxDispatch extends Fun<[Action]>,
+    AcIn extends any[], AcOut,
+    ActionType extends string = string,
 > (
-    actionCreator: ActionCreatorType | ActionCreator,
-    dispatch: ReduxDispatch,
-): typeof actionCreator {
-    const boundActionCreator = (
-        ...args: Parameters<ActionCreatorType>
-    ) => dispatch(actionCreator(...args));
-    if ((actionCreator as ActionCreator).type) {
-        (boundActionCreator as ActionCreator).type =
-            (actionCreator as ActionCreator).type;
+    actionCreatorOrThunk: Fun<AcIn, AcOut>,
+    dispatch: Fun<[AcOut]>,
+    type?: ActionType,
+): WithTypeField<Fun<AcIn, ReturnTypeOrType<AcOut>>, ActionType> {
+    const boundActionCreatorOrThunk =
+        (...args: AcIn) => dispatch(actionCreatorOrThunk(...args));
+    if (
+        isWithTypeField<typeof actionCreatorOrThunk, ActionType>(
+            actionCreatorOrThunk,
+        )
+    ) {
+        boundActionCreatorOrThunk.type = actionCreatorOrThunk.type;
+    } else {
+        boundActionCreatorOrThunk.type = (
+            type ?? `${actionCreatorOrThunk.name}()`
+        ) as ActionType;
     }
-    return boundActionCreator as ActionCreatorType;
+    return boundActionCreatorOrThunk;
 }
 
 
@@ -384,9 +429,9 @@ export function bindActionCreator<
 /**
  * Redux's original `bindActionCreators` clone with extended `Action`
  * support (original function assumes dispatch parametrized with redux's
- * `AnyAction` which is not compatible with `Action`).
+ * `UnknownAction` which is not compatible with `Action`).
  *
- * Turns an object with action creators into an object with every
+ * Turns an object with action creators or thunks into an object with every
  * action creator wrapped into a `dispatch` call.
  *
  * @function bindActionCreators
@@ -395,18 +440,31 @@ export function bindActionCreator<
  * @returns Object with wrapped action creators
  */
 export function bindActionCreators<
-    ActionCreatorType extends Fun,
-    ReduxDispatch extends Fun<[Action]>,
-    ActionCreators extends Record<string, ActionCreatorType | ActionCreator>,
+    ActionCreators extends { [P in keyof ActionCreators]: ActionCreators[P] },
+    AcOuts = ActionCreators[keyof ActionCreators],
+    BoundActionCreators = {
+        [P in keyof ActionCreators]:
+            WithTypeField<
+                Fun<
+                    Parameters<ActionCreators[P]>,
+                    ReturnTypeOrType<ReturnType<ActionCreators[P]>>
+                >
+            >
+    },
 > (
     actionCreators: ActionCreators,
-    dispatch: ReduxDispatch,
-): typeof actionCreators {
-    return (
-        objectMap(actionCreators) (
-            ([k, a]) => [k, bindActionCreator(a, dispatch)],
-        )
-    ) as unknown as ActionCreators;
+    dispatch: Fun<[AcOuts]>,
+    treeName?: string,
+): BoundActionCreators {
+    return objectMap(actionCreators) (
+        ([k, a]) => [
+            k,
+            bindActionCreator(
+                a, dispatch,
+                treeName ? `${treeName}.${String(k)}()` : `${String(k)}()`,
+            ),
+        ],
+    ) as BoundActionCreators;
 }
 
 
@@ -421,15 +479,22 @@ export function bindActionCreators<
  * @returns Object with wrapped action creators
  */
 export function bindActionCreatorsTree<
-    ActionCreatorType extends Fun,
-    ReduxDispatch extends Fun<[Action]>,
-    ActionCreators extends Record<string, ActionCreatorType | ActionCreator>,
-    ACTree extends Record<keyof ACTree, ActionCreators>,
+    ACTree extends { [P in keyof ACTree]: ACTree[P] },
+    ActionCreators = ACTree[keyof ACTree],
+    AcOuts = ActionCreators[keyof ActionCreators],
+    BoundACTree = {
+        [P in keyof ACTree]:
+            ReturnType<
+                typeof bindActionCreators<
+                    ACTree[P], ACTree[P][keyof ACTree[P]]
+                >
+            >
+    },
 > (
     acTree: ACTree,
-    dispatch: ReduxDispatch,
-): ACTree {
+    dispatch: Fun<[AcOuts]>,
+): BoundACTree {
     return objectMap(acTree) (
-        ([k, a]) => [k, bindActionCreators(a, dispatch)],
-    ) as ACTree;
+        ([k, a]) => [k, bindActionCreators(a, dispatch, String(k))],
+    ) as BoundACTree;
 }

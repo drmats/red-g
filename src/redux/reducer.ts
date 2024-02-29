@@ -10,9 +10,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-
-
-
 import type { Fun } from "@xcmats/js-toolbox/type";
 import { choose, identity } from "@xcmats/js-toolbox/func";
 
