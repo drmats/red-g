@@ -18,7 +18,9 @@ export {
     bindActionCreatorsTree,
     defineActionCreator,
     emptyActionCreators,
+    isACWithPayload,
     isWithPayload,
+    isWithTypeField,
     payloadActionCreators,
     type Action,
     type ActionCreator,
@@ -29,6 +31,7 @@ export {
     type PayloadActionCreator,
     type PayloadActionCreators,
     type ReduxCompatAction,
+    type WithTypeField,
 } from "./redux/action";
 export {
     createReducer,
