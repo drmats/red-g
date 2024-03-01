@@ -355,7 +355,7 @@ export function actionCreators<
 /**
  * Dispatch-bound action creators and thunks contain type field.
  */
-type WithTypeField<T, ActionType extends string = string> =
+export type WithTypeField<T, ActionType extends string = string> =
     & T
     & { type: ActionType };
 
@@ -365,7 +365,7 @@ type WithTypeField<T, ActionType extends string = string> =
 /**
  * Checks for `type` field presence in a given candidate.
  */
-const isWithTypeField = <
+export const isWithTypeField = <
     T,
     ActionType extends string = string,
 >(c: T): c is WithTypeField<T, ActionType> => {

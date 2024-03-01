@@ -244,6 +244,7 @@ redux
 >   defineActionCreator: [Function: defineActionCreator],
 >   emptyActionCreators: [Function: emptyActionCreators],
 >   isWithPayload: [Function: isWithPayload],
+>   isWithTypeField: [Function: isWithTypeField],
 >   payloadActionCreators: [Function: payloadActionCreators],
 >   sliceReducer: [Function: sliceReducer] }
 > ```
